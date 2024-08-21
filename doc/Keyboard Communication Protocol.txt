@@ -1,0 +1,103 @@
+Keyboard Communication Protocol
+
+The keyboard data line is bidirectional and is driven by whatever device is
+sending data. The keyboard clock line is driven by the keyboard only. All
+data transfers are synchronous with the keyboard clock. Each transmission
+consists of eight bits, with the highest-order bits first. 
+
+When sending data to the Macintosh, the keyboard clock transmits eight
+330-usec cycles (160 usec low, 170 usec high) on the normally high clock
+line. It places the data bit on the data line 40 usec before the falling
+edge of the clock line and maintains it for 330 usec. The data bit is
+clocked into the Macintosh's VIA shift register on the rising edge of the
+keyboard clock cycle. 
+
+When the Macintosh sends data to the keyboard, the keyboard clock transmits
+eight 400-usec cycles (180 usec low, 220 usec high) on the clock line. On
+the falling edge of the keyboard clock cycle, the Macintosh places the data
+bit on the data line and holds it there for 400 usec. The keyboard reads the
+data bit 80 usec after the rising edge of the keyboard clock cycle. 
+
+Only the Macintosh can initiate communication over the keyboard lines. On
+power-up of either the Macintosh or the keyboard, the Macintosh is in
+charge, and the external device is passive. The Macintosh signals that it's
+ready to begin communication by pulling the keyboard data line low. Upon
+detecting this, the keyboard starts clocking and the Macintosh sends a
+command. The last bit of the command leaves the keyboard data line low; the
+Macintosh then indicates it's ready to receive the keyboard's response by
+setting the data line high. 
+
+The first command the Macintosh sends out is the Model Number command. The
+keyboard's response to this command is to reset itself and send back its
+model number to the Macintosh. If no response is received for 1/2 second,
+the Macintosh tries the Model Number command again. Once the Macintosh has
+successfully received a model number from the keyboard, normal operation can
+begin. The Macintosh sends the Inquiry command;  the keyboard sends back a
+Key Transition response if a key has been pressed or released.  If no key
+transition has occurred after 1/4 second, the keyboard sends back a Null
+response to let the Macintosh know it's still there. The Macintosh then
+sends the Inquiry command again. In normal operation, the Macintosh sends
+out an Inquiry command every 1/4 second. If it receives no response within
+1/2 second, it assumes the keyboard is missing or needs resetting, so it
+begins again with the Model Number command. 
+
+There are two other commands the Macintosh can send:  the Instant command,
+which gets an instant keyboard status without the 1/4-second timeout, and
+the Test command, to perform a keyboard self-test. Here's a list of the
+commands that can be sent from the Macintosh to the keyboard: 
+
+  Command name    Value    Keyboard response
+  Inquiry         $10      Key Transition code or Null ($7B)
+  Instant         $14      Key Transition code or Null ($7B)
+  Model Number    $16      Bit 0:    1
+                           Bits 1-3: keyboard model number, 1-8
+                           Bits 4-6: next device number, 1-8
+                           Bit 7:    1 if another device connected
+  Test            $36      ACK ($7D) or NAK ($77)
+
+The Key Transition responses are sent out by the keyboard as a single byte: 
+Bit 7 high means a key-up transition, and bit 7 low means a key-down. Bit 0
+is always high.  The Key Transition responses for key-down transitions on
+the keyboard are shown (in hexadecimal) in Figure 12. Note that these
+response codes are different from the key codes returned by the keyboard
+driver software. The keyboard driver strips off bit 7 of the response and
+shifts the result one bit to the right, removing bit 0. For example,
+response code $33 becomes $19, and $2B becomes $15. 
+
+_______________________________________________________________________________
+
+ Keypad Communication Protocol
+
+When a numeric keypad is used, it must be inserted between the keyboard and
+the Macintosh; that is, the keypad cable plugs into the jack on the front of
+the Macintosh, and the keyboard cable plugs into a jack on the numeric
+keypad. In this configuration, the timings and protocol for the clock and
+data lines work a little differently:  The keypad acts like a keyboard when
+communicating with the Macintosh, and acts like a Macintosh when
+communicating over the separate clock and data lines going to the keyboard.
+All commands from the Macintosh are now received by the keypad instead of
+the keyboard, and only the keypad can communicate directly with the
+keyboard. 
+
+When the Macintosh sends out an Inquiry command, one of two things may
+happen, depending on the state of the keypad. If no key transitions have
+occurred on the keypad since the last Inquiry, the keypad sends an Inquiry
+command to the keyboard and, later, retransmits the keyboard's response back
+to the Macintosh. But if a key transition has occurred on the keypad, the
+keypad responds to an Inquiry by sending back the Keypad response ($79) to
+the Macintosh. In that case, the Macintosh immediately sends an Instant
+command, and this time the keypad sends back its own Key Transition
+response.  As with the keyboard, bit 7 high means key-up and bit 7 low means
+key-down. 
+
+The Key Transition responses for key-down transitions on the keypad are shown in
+Figure 12.
+
+***Refer to Figure 12.***
+
+Figure 12-Key-Down Transitions
+
+Again, note that these response codes are different from the key codes
+returned by the keyboard driver software. The keyboard driver strips off bit
+7 of the response and shifts the result one bit to the right, removing bit
+0. 
