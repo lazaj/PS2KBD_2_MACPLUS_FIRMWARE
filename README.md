@@ -1,4 +1,4 @@
-# JEESE PS/2 PC Keyboard adapter for Macintosh Plys
+# JEESE PS/2 PC Keyboard adapter for Macintosh Plus
 
 PS/2 Keyboard Adapter for Macintosh Plus - A Modern Solution for Your Vintage Computer
 
