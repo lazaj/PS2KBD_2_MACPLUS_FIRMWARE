@@ -1,31 +1,19 @@
-# Arduino-based PS2 -> Macintosh Plus keyboard adapter
+# JEESE PS/2 PC Keyboard adapter for Macintosh Plys
 
-This sketch allows to use a PS/2 keyboard with the Macintosh Plus. Mapping between PS/2 keys and Mac keys is stored in the [keymap.ino](mac_plus_ps2/keymap.ino) file. Sketch uses a modified version of the [PS2Keyboard Library](http://www.pjrc.com/teensy/td_libs_PS2Keyboard.html) --- all the logic except `getScanCode()` method have been stripped.
+PS/2 Keyboard Adapter for Macintosh Plus - A Modern Solution for Your Vintage Computer
 
-![macplus-ps2.jpg](doc/macplus-ps2.jpg)
+Revitalize your Macintosh Plus with this practical and custom-designed adapter! Inspired by the original setup by @trekawek (check out the project on GitHub: https://github.com/trekawek/mac-plus-ps2), this adapter allows you to use any PS/2 PC keyboard with a Macintosh Plus while preserving the original keyboard.
 
-#### Connecting to Macintosh Plus
+Key features:
 
-Get a phone cord with RJ10 plug and connect pin as follows (pin 1 of the phone jack is on the left when the wire side is facing toward you):
+- Extended Compatibility: Easily connect a PS/2 keyboard to your Macintosh Plus.
+- Custom Design: A specially designed PCB for perfect integration.
+- Optional Casing: Protect and style your adapter with an optional case. Open Source Firmware and Electronic Schematic: Enjoy the transparency and flexibility of open-source firmware and schematics, offering endless possibilities for enhancement and customization.
 
-1. GND -> GND.
-2. +CLK -> pin D6,
-3. +DATA -> pin D5,
-4. Vcc -> Vin
+Why choose this adapter ?
+Original Macintosh Plus keyboards are becoming increasingly rare. Using a modern PS/2 keyboard helps preserve these valuable pieces while allowing continued use of your vintage computer.
 
-#### Connecting to PS/2 keyboard
+Perfect for:
 
-For the Mini-DIN 6 socket, pins should be connected as follows (the diagram presents the female socket):
-
-1. +DATA -> pin D3,
-2. (not connected),
-3. GND -> GND,
-4. Vcc -> +5V,
-5. +CLK -> pin D2,
-6. (not connected)
-
-## References
- 
-* [Similar project based on stm32f0discovery kit](https://web.archive.org/web/20190414143235/http://www.synack.net/~bbraun/mackbd/index.html),
-* Mac Hardware Info (ftp://ftp.apple.asimov.net/pub/apple_II/documentation/macintosh/Mac%20Hardware%20Info%20-%20Mac%20128K.pdf) - contains the description of the protocol,
-* [Mac Plus keyboard rawcodes](https://github.com/altercation/tmk_firrmware_hhkb_teensy2/blob/master/protocol/m0110.c).
+- Retro computing collectors
+- Vintage hardware repair specialists
