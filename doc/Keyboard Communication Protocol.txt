@@ -101,3 +101,5 @@ Again, note that these response codes are different from the key codes
 returned by the keyboard driver software. The keyboard driver strips off bit
 7 of the response and shifts the result one bit to the right, removing bit
 0. 
+
+https://web.archive.org/web/20190414143235/http://www.synack.net/~bbraun/mackbd/index.html
